@@ -1,3 +1,22 @@
+The task: create a booking system for a ferry journey:
+Du skal bygge en enkel webapplikasjon der en bruker kan søke etter og velge en ferjeavgang.
+    Funksjonelle krav
+        Søk etter avganger — brukeren velger avreisested, destinasjon og dato
+        Resultatliste — viser tilgjengelige avganger med tidspunkt, varighet og pris
+        Velg avgang — brukeren kan velge én avgang og gå videre
+        Oppsummering — en enkel kvitteringsside med valgt reise og totalpris
+        Backend — leverer mock-avganger som JSON; minst to ruter (f.eks. Bergen–Stavanger og Bergen–Hirtshals)
+    Tekniske krav
+        Frontend: React med Next.js (App Router eller Pages Router — valgfritt)
+        Backend: valgfritt — enten:
+        Next.js API Routes / Server Actions (SSR, alt i ett prosjekt), eller
+        Separat REST-API i C#, Go eller Python
+        Ingen database nødvendig — mock-data i kode eller JSON-fil er helt greit
+        Koden skal ligge i et offentlig GitHub-repo med en kort README
+
+Backend solved with NextJS Server Actions, mock data created. Empty booking page created and linked from main page. Mock data fetched to frontend.
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

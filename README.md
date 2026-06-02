@@ -14,6 +14,7 @@ Du skal bygge en enkel webapplikasjon der en bruker kan søke etter og velge en 
         Ingen database nødvendig — mock-data i kode eller JSON-fil er helt greit
         Koden skal ligge i et offentlig GitHub-repo med en kort README
 
+Backend solved with NextJS Server Actions, mock data created. Empty booking page created and linked from main page. Mock data fetched to frontend.
 
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).

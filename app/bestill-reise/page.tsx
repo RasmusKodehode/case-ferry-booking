@@ -11,17 +11,22 @@ interface dataProps {
   arrival: string;
   ETD: string;
   ETA: string;
-  duration: string;
+  duration: number;
   price: number;
 }
 
 export default function BookTravel() {
+  const [data, setData] = useState<dataProps[]>([])
   const [startLocations, setStartLocations] = useState<string[]>([]);
   const [endLocations, setEndLocations] = useState<string[]>([]);
   const [selectedStart, setSelectedStart] = useState<string | undefined>(
     undefined,
   );
   const [selectedEnd, setSelectedEnd] = useState<string | undefined>(undefined);
+
+  const filterDepartures = (start: string | undefined, end: string | undefined) => {
+    data.filter((item: dataProps) => item.departure === start && item.arrival === end)
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,9 +37,14 @@ export default function BookTravel() {
       const uniqueEnds = [...new Set(data.map((item: any) => item.arrival))];
       setStartLocations(uniqueStarts);
       setEndLocations(uniqueEnds);
+      setData(data);
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    filterDepartures(selectedStart, selectedEnd);
+  }, [data])
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">

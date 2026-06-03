@@ -8,8 +8,8 @@ export async function getMockData() {
       arrival: "Stavanger",
       ETD: "01.07.26 14.30",
       ETA: "01.07.26 19.00",
-      duration: "4.5",
-      price: "800",
+      duration: 4.5,
+      price: 800,
     },
     {
       id: 2,
@@ -17,8 +17,8 @@ export async function getMockData() {
       arrival: "Hirtshals",
       ETD: "01.07.26 19.30",
       ETA: "01.07.26 08.00",
-      duration: "12.5",
-      price: "1000",
+      duration: 12.5,
+      price: 1000,
     },
     {
       id: 3,
@@ -26,8 +26,8 @@ export async function getMockData() {
       arrival: "Hirtshals",
       ETD: "01.07.26 14.30",
       ETA: "02.07.26 08.00",
-      duration: "17.5",
-      price: "1900",
+      duration: 17.5,
+      price: 1900,
     },
     {
       id: 4,
@@ -35,8 +35,8 @@ export async function getMockData() {
       arrival: "Stavanger",
       ETD: "02.07.26 20.00",
       ETA: "03.07.26 10.00",
-      duration: "14",
-      price: "1200",
+      duration: 14,
+      price: 1200,
     },
     {
       id: 5,
@@ -44,8 +44,8 @@ export async function getMockData() {
       arrival: "Bergen",
       ETD: "03.07.26 10.30",
       ETA: "03.07.26 15.00",
-      duration: "4.5",
-      price: "800",
+      duration: 4.5,
+      price: 800,
     },
     {
       id: 6,
@@ -53,8 +53,8 @@ export async function getMockData() {
       arrival: "Bergen",
       ETD: "02.07.26 20.00",
       ETA: "03.07.26 15.00",
-      duration: "19",
-      price: "1900",
+      duration: 19,
+      price: 1900,
     },
   ];
 }

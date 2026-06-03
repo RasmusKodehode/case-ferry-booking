@@ -1,8 +1,14 @@
 "use client";
 import { useState } from "react";
 
-export default function DropDown({ locations }: { locations: string[] }) {
-  const [selectedLocation, setSelectedLocation] = useState<string>("");
+interface dropDownProps {
+    locations: string[];
+    selectedLocation: string | undefined;
+    setSelectedLocation: (newLocation: string) => void;
+}
+
+export default function DropDown({ locations, selectedLocation, setSelectedLocation }: dropDownProps) {
+  //const [selectedLocation, setSelectedLocation] = useState<string>("");
 
   return (
     <div>
@@ -18,7 +24,6 @@ export default function DropDown({ locations }: { locations: string[] }) {
           </option>
         ))}
       </select>
-      {selectedLocation && <p>You selected: {selectedLocation}</p>}
     </div>
   );
 }

@@ -23,10 +23,26 @@ export default function BookTravel() {
     undefined,
   );
   const [selectedEnd, setSelectedEnd] = useState<string | undefined>(undefined);
+  const [dates, setDates] = useState<string[]>([]);
+  const [times, setTimes] = useState<string[]>([]);
 
-  const filterDepartures = (start: string | undefined, end: string | undefined) => {
-    data.filter((item: dataProps) => item.departure === start && item.arrival === end)
+  const filterDepartures = data.filter((item: dataProps) => item.departure === selectedStart && item.arrival === selectedEnd);
+
+  const getDate = (datestring: string) => {
+    const dateTimeArray = datestring.split(" ");
+    const date = dateTimeArray[0];
+    return date;
   }
+
+  const getTime = (datestring: string) => {
+    const dateTimeArray = datestring.split(" ");
+    const time = dateTimeArray[1];
+    return time;
+  };
+
+  const availableDates = [
+    ...new Set(filterDepartures.map((item) => item.ETD.split(" ")[0])),
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,8 +59,12 @@ export default function BookTravel() {
   }, []);
 
   useEffect(() => {
-    filterDepartures(selectedStart, selectedEnd);
+    
   }, [data])
+
+  useEffect(() => {
+
+  })
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">

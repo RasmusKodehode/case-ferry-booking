@@ -1,12 +1,141 @@
-import Image from "next/image";
-import { getMockData } from "../actions";
+"use client";
 
-export default async function BookTravel() {
-  const data: any = await getMockData();
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { getMockData } from "../actions";
+import DropDown from "@/components/DropDown";
+import DepartureCalendar from "@/components/Calendar";
+
+interface dataProps {
+  id: number;
+  departure: string;
+  arrival: string;
+  ETD: string;
+  ETA: string;
+  duration: number;
+  price: number;
+}
+
+export default function BookTravel() {
+  const [data, setData] = useState<dataProps[]>([])
+  const [startLocations, setStartLocations] = useState<string[]>([]);
+  const [endLocations, setEndLocations] = useState<string[]>([]);
+  const [selectedStart, setSelectedStart] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedEnd, setSelectedEnd] = useState<string | undefined>(undefined);
+  const [availableDates, setAvailableDates] = useState<string[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [departures, setDepartures] = useState<any[]>([]);
+
+  const filterDepartures = data.filter((item: dataProps) => item.departure === selectedStart && item.arrival === selectedEnd);
+
+  const getDate = (datestring: string) => {
+    const dateTimeArray = datestring.split(" ");
+    const date = dateTimeArray[0];
+    return date;
+  }
+
+  const getTime = (datestring: string) => {
+    const dateTimeArray = datestring.split(" ");
+    const time = dateTimeArray[1];
+    return time;
+  };
+
+  const availableTimes = [
+    ...new Set(filterDepartures.map((item) => item.ETD.split(" ")[1])),
+  ];
+
+  const filteredDepartures = departures.filter((departure) => {
+    if (!selectedStart || !selectedEnd || !selectedDate) return false;
+
+    // Parse ETD (DD.MM.YY HH.MM) into a Date object
+    const [day, month, year] = departure.ETD.split(" ")[0]
+      .split(".")
+      .map(Number);
+    const departureDate = new Date(2000 + year, month - 1, day);
+
+    // Normalize both dates to midnight for comparison
+    const normalizedDepartureDate = new Date(departureDate);
+    normalizedDepartureDate.setHours(0, 0, 0, 0);
+
+    const normalizedSelectedDate = new Date(selectedDate);
+    normalizedSelectedDate.setHours(0, 0, 0, 0);
+
+    console.log(
+      `departureDate: ${departureDate}, selectedDate: ${selectedDate}`,
+    );
+
+    return (
+      departure.departure === selectedStart &&
+      departure.arrival === selectedEnd &&
+      normalizedDepartureDate.getTime() === normalizedSelectedDate.getTime()
+    );
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getMockData();
+      setData(data);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    setStartLocations([...new Set(data.map((item: any) => item.departure))]);
+    setEndLocations([...new Set(data.map((item: any) => item.arrival))]);
+  }, [data]);
+
+  useEffect(() => {
+    setAvailableDates([
+      ...new Set(filterDepartures.map((item) => item.ETD.split(" ")[0])),
+    ]);
+  }, [selectedStart, selectedEnd]);
+
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">
       <main className="flex flex-1 w-full flex-col items-center justify-between px-18 py-32 bg-white sm:items-start">
         Bestill reise her!
+        <DropDown
+          locations={startLocations}
+          selectedLocation={selectedStart}
+          setSelectedLocation={setSelectedStart}
+        />
+        {selectedStart && <p>You selected: {selectedStart}</p>}
+        <DropDown
+          locations={endLocations}
+          selectedLocation={selectedEnd}
+          setSelectedLocation={setSelectedEnd}
+        />
+        {selectedEnd && <p>You selected: {selectedEnd}</p>}
+        {availableDates.length !== 0 && (
+          <DepartureCalendar
+            availableDates={availableDates}
+            selectedDate={selectedDate}
+            onDateSelect={setSelectedDate}
+          />
+        )}
+        {/*`Available dates are ${availableDates} and available times are ${availableTimes}`*/}
+        {`selected date is ${selectedDate}`}
+        {selectedDate && selectedStart && selectedEnd && (
+          <div className="mt-4">
+            <h2 className="text-lg font-semibold mb-2">
+              Available Departures:
+            </h2>
+            {filteredDepartures.length > 0 ? (
+              <ul className="list-disc pl-5">
+                {filteredDepartures.map((departure) => (
+                  <li key={departure.id}>
+                    {departure.ETD} - {departure.ETA} (Duration:{" "}
+                    {departure.duration} hours)
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No departures available for the selected route and date.</p>
+            )}
+          </div>
+        )}
       </main>
     </div>
   );

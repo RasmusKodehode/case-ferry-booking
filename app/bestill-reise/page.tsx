@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { getMockData } from "../actions";
 import DropDown from "@/components/DropDown";
+import DepartureCalendar from "@/components/Calendar";
 
 interface dataProps {
   id: number;
@@ -58,14 +59,6 @@ export default function BookTravel() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    
-  }, [data])
-
-  useEffect(() => {
-
-  })
-
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">
       <main className="flex flex-1 w-full flex-col items-center justify-between px-18 py-32 bg-white sm:items-start">
@@ -82,6 +75,8 @@ export default function BookTravel() {
           setSelectedLocation={setSelectedEnd}
         />
         {selectedEnd && <p>You selected: {selectedEnd}</p>}
+        <DepartureCalendar availableDates={availableDates} />
+        {`Available dates are ${availableDates}`}
       </main>
     </div>
   );

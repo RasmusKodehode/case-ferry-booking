@@ -48,14 +48,28 @@ export default function BookTravel() {
 
   const filteredDepartures = departures.filter((departure) => {
     if (!selectedStart || !selectedEnd || !selectedDate) return false;
-    const departureDate = new Date(
-      departure.ETD.split(" ")[0].split(".").reverse().join("-"),
+
+    // Parse ETD (DD.MM.YY HH.MM) into a Date object
+    const [day, month, year] = departure.ETD.split(" ")[0]
+      .split(".")
+      .map(Number);
+    const departureDate = new Date(2000 + year, month - 1, day);
+
+    // Normalize both dates to midnight for comparison
+    const normalizedDepartureDate = new Date(departureDate);
+    normalizedDepartureDate.setHours(0, 0, 0, 0);
+
+    const normalizedSelectedDate = new Date(selectedDate);
+    normalizedSelectedDate.setHours(0, 0, 0, 0);
+
+    console.log(
+      `departureDate: ${departureDate}, selectedDate: ${selectedDate}`,
     );
-    const selectedDateObj = new Date(selectedDate);
+
     return (
       departure.departure === selectedStart &&
       departure.arrival === selectedEnd &&
-      departureDate.toDateString() === selectedDateObj.toDateString()
+      normalizedDepartureDate.getTime() === normalizedSelectedDate.getTime()
     );
   });
 
@@ -102,7 +116,7 @@ export default function BookTravel() {
           />
         )}
         {/*`Available dates are ${availableDates} and available times are ${availableTimes}`*/}
-        {/*`selected date is ${selectedDate}`*/}
+        {`selected date is ${selectedDate}`}
         {selectedDate && selectedStart && selectedEnd && (
           <div className="mt-4">
             <h2 className="text-lg font-semibold mb-2">

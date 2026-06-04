@@ -24,8 +24,9 @@ export default function BookTravel() {
     undefined,
   );
   const [selectedEnd, setSelectedEnd] = useState<string | undefined>(undefined);
-  const [dates, setDates] = useState<string[]>([]);
-  const [times, setTimes] = useState<string[]>([]);
+  const [availableDates, setAvailableDates] = useState<string[]>([]);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [departures, setDepartures] = useState<any[]>([]);
 
   const filterDepartures = data.filter((item: dataProps) => item.departure === selectedStart && item.arrival === selectedEnd);
 
@@ -41,23 +42,41 @@ export default function BookTravel() {
     return time;
   };
 
-  const availableDates = [
-    ...new Set(filterDepartures.map((item) => item.ETD.split(" ")[0])),
+  const availableTimes = [
+    ...new Set(filterDepartures.map((item) => item.ETD.split(" ")[1])),
   ];
+
+  const filteredDepartures = departures.filter((departure) => {
+    if (!selectedStart || !selectedEnd || !selectedDate) return false;
+    const departureDate = new Date(
+      departure.ETD.split(" ")[0].split(".").reverse().join("-"),
+    );
+    const selectedDateObj = new Date(selectedDate);
+    return (
+      departure.departure === selectedStart &&
+      departure.arrival === selectedEnd &&
+      departureDate.toDateString() === selectedDateObj.toDateString()
+    );
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await getMockData();
-      const uniqueStarts = [
-        ...new Set(data.map((item: any) => item.departure)),
-      ];
-      const uniqueEnds = [...new Set(data.map((item: any) => item.arrival))];
-      setStartLocations(uniqueStarts);
-      setEndLocations(uniqueEnds);
       setData(data);
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    setStartLocations([...new Set(data.map((item: any) => item.departure))]);
+    setEndLocations([...new Set(data.map((item: any) => item.arrival))]);
+  }, [data]);
+
+  useEffect(() => {
+    setAvailableDates([
+      ...new Set(filterDepartures.map((item) => item.ETD.split(" ")[0])),
+    ]);
+  }, [selectedStart, selectedEnd]);
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">
@@ -75,8 +94,34 @@ export default function BookTravel() {
           setSelectedLocation={setSelectedEnd}
         />
         {selectedEnd && <p>You selected: {selectedEnd}</p>}
-        <DepartureCalendar availableDates={availableDates} />
-        {`Available dates are ${availableDates}`}
+        {availableDates.length !== 0 && (
+          <DepartureCalendar
+            availableDates={availableDates}
+            selectedDate={selectedDate}
+            onDateSelect={setSelectedDate}
+          />
+        )}
+        {/*`Available dates are ${availableDates} and available times are ${availableTimes}`*/}
+        {/*`selected date is ${selectedDate}`*/}
+        {selectedDate && selectedStart && selectedEnd && (
+          <div className="mt-4">
+            <h2 className="text-lg font-semibold mb-2">
+              Available Departures:
+            </h2>
+            {filteredDepartures.length > 0 ? (
+              <ul className="list-disc pl-5">
+                {filteredDepartures.map((departure) => (
+                  <li key={departure.id}>
+                    {departure.ETD} - {departure.ETA} (Duration:{" "}
+                    {departure.duration} hours)
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No departures available for the selected route and date.</p>
+            )}
+          </div>
+        )}
       </main>
     </div>
   );

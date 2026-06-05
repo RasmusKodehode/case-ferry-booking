@@ -13,7 +13,7 @@ export default function DepartureTable({
 }: SelectableTableProps) {
   return (
     <>
-      <table className="APItable paramtable margin-sm">
+      <table className="bg-amber-400 w-full margin-sm">
         <thead>
           <tr>
             <th className="p-2 text-left">Departure Time</th>
@@ -25,7 +25,7 @@ export default function DepartureTable({
         <tbody>
           {departures.map((row, index) => (
             <tr
-              key={row.column1}
+              key={row.ETD}
               onClick={() => toggleRowSelection(index)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
@@ -36,12 +36,12 @@ export default function DepartureTable({
               role="button"
               tabIndex={0}
               aria-pressed={selectedDeparture.includes(index)}
-              className={`${selectedDeparture.includes(index) ? "selectedRow" : "unselectedRow"} paramRow`}
+              className={`${selectedDeparture.includes(index) ? "bg-amber-800" : "bg-white"} cursor-pointer border rounded-sm border-spacing-0.5 focus:outline-2 focus:-outline-offset-2`}
             >
-              <td className="p-2">{row.ETD}</td>
-              <td className="p-2">{row.ETA}</td>
-              <td className="p-2">{row.duration} hours</td>
-              <td className="p-2">{row.price}</td>
+              <td className="p-2 border">{row.ETD}</td>
+              <td className="p-2 border">{row.ETA}</td>
+              <td className="p-2 border">{row.duration} hours</td>
+              <td className="p-2 border">{row.price}</td>
             </tr>
           ))}
         </tbody>

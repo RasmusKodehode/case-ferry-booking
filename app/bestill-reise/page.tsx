@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getMockData } from "../actions";
 import DropDown from "@/components/DropDown";
 import DepartureCalendar from "@/components/Calendar";
+import DepartureTable from "@/components/DepartureTable";
 
 interface dataProps {
   id: number;
@@ -26,22 +27,10 @@ export default function BookTravel() {
   const [selectedEnd, setSelectedEnd] = useState<string | undefined>(undefined);
   const [availableDates, setAvailableDates] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [departures, setDepartures] = useState<any[]>([]);
   const [filteredDepartures, setFilteredDepartures] = useState<any[]>([]);
+  const [selectedDeparture, setSelectedDeparture] = useState<any[]>([]);
 
   const filterListOfDates = data.filter((item: dataProps) => item.departure === selectedStart && item.arrival === selectedEnd);
-
-  const getDate = (datestring: string) => {
-    const dateTimeArray = datestring.split(" ");
-    const date = dateTimeArray[0];
-    return date;
-  }
-
-  const getTime = (datestring: string) => {
-    const dateTimeArray = datestring.split(" ");
-    const time = dateTimeArray[1];
-    return time;
-  };
 
   const filterDepartures = () => {
     if (!selectedStart || !selectedEnd || !selectedDate || !data) {
@@ -70,6 +59,12 @@ export default function BookTravel() {
     });
     setFilteredDepartures(filtered);
   }
+
+  const toggleRowSelection = useCallback((index: number) => {
+    setSelectedDeparture((prev) =>
+      prev.includes(index) ? prev.filter((r) => r !== index) : [...prev, index],
+    );
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -137,6 +132,9 @@ export default function BookTravel() {
               <p>No departures available for the selected route and date.</p>
             )}
           </div>
+        )}
+        {selectedDate && selectedStart && selectedEnd && (
+          <DepartureTable departures={filteredDepartures} selectedDeparture={selectedDeparture} toggleRowSelection={toggleRowSelection} />
         )}
       </main>
     </div>

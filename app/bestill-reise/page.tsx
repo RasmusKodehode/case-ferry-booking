@@ -27,8 +27,9 @@ export default function BookTravel() {
   const [availableDates, setAvailableDates] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [departures, setDepartures] = useState<any[]>([]);
+  const [filteredDepartures, setFilteredDepartures] = useState<any[]>([]);
 
-  const filterDepartures = data.filter((item: dataProps) => item.departure === selectedStart && item.arrival === selectedEnd);
+  const filterListOfDates = data.filter((item: dataProps) => item.departure === selectedStart && item.arrival === selectedEnd);
 
   const getDate = (datestring: string) => {
     const dateTimeArray = datestring.split(" ");
@@ -42,36 +43,33 @@ export default function BookTravel() {
     return time;
   };
 
-  const availableTimes = [
-    ...new Set(filterDepartures.map((item) => item.ETD.split(" ")[1])),
-  ];
+  const filterDepartures = () => {
+    if (!selectedStart || !selectedEnd || !selectedDate || !data) {
+      setFilteredDepartures([]);
+      return;
+    }
+    const filtered = data.filter((departure) => {
+      // Parse ETD (DD.MM.YY HH.MM) into a Date object
+      const [day, month, year] = departure.ETD.split(" ")[0]
+        .split(".")
+        .map(Number);
+      const departureDate = new Date(2000 + year, month - 1, day);
 
-  const filteredDepartures = departures.filter((departure) => {
-    if (!selectedStart || !selectedEnd || !selectedDate) return false;
+      // Normalize both dates to midnight for comparison
+      const normalizedDepartureDate = new Date(departureDate);
+      normalizedDepartureDate.setHours(0, 0, 0, 0);
 
-    // Parse ETD (DD.MM.YY HH.MM) into a Date object
-    const [day, month, year] = departure.ETD.split(" ")[0]
-      .split(".")
-      .map(Number);
-    const departureDate = new Date(2000 + year, month - 1, day);
+      const normalizedSelectedDate = new Date(selectedDate);
+      normalizedSelectedDate.setHours(0, 0, 0, 0);
 
-    // Normalize both dates to midnight for comparison
-    const normalizedDepartureDate = new Date(departureDate);
-    normalizedDepartureDate.setHours(0, 0, 0, 0);
-
-    const normalizedSelectedDate = new Date(selectedDate);
-    normalizedSelectedDate.setHours(0, 0, 0, 0);
-
-    console.log(
-      `departureDate: ${departureDate}, selectedDate: ${selectedDate}`,
-    );
-
-    return (
-      departure.departure === selectedStart &&
-      departure.arrival === selectedEnd &&
-      normalizedDepartureDate.getTime() === normalizedSelectedDate.getTime()
-    );
-  });
+      return (
+        departure.departure === selectedStart &&
+        departure.arrival === selectedEnd &&
+        normalizedDepartureDate.getTime() === normalizedSelectedDate.getTime()
+      );
+    });
+    setFilteredDepartures(filtered);
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,9 +86,13 @@ export default function BookTravel() {
 
   useEffect(() => {
     setAvailableDates([
-      ...new Set(filterDepartures.map((item) => item.ETD.split(" ")[0])),
+      ...new Set(filterListOfDates.map((item) => item.ETD.split(" ")[0])),
     ]);
   }, [selectedStart, selectedEnd]);
+
+  useEffect(() => {
+    filterDepartures();
+  }, [selectedStart, selectedEnd, selectedDate])
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">

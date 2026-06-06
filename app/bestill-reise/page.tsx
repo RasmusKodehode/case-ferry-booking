@@ -95,14 +95,18 @@ export default function BookTravel() {
   }, [data]);
 
   useEffect(() => {
+    setFilteredDepartures([]);
+    setSelectedDate(null);
+    setSelectedDeparture(null);
     setAvailableDates([
       ...new Set(filterListOfDates.map((item) => item.ETD.split(" ")[0])),
     ]);
   }, [selectedStart, selectedEnd]);
 
   useEffect(() => {
+    setSelectedDeparture(null);
     filterDepartures();
-  }, [selectedStart, selectedEnd, selectedDate]);
+  }, [selectedDate]);
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">

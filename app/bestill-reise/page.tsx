@@ -28,7 +28,7 @@ export default function BookTravel() {
   const [availableDates, setAvailableDates] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [filteredDepartures, setFilteredDepartures] = useState<any[]>([]);
-  const [selectedDeparture, setSelectedDeparture] = useState<any[]>([]);
+  const [selectedDeparture, setSelectedDeparture] = useState<number | null>(null);
 
   const filterListOfDates = data.filter((item: dataProps) => item.departure === selectedStart && item.arrival === selectedEnd);
 
@@ -61,9 +61,7 @@ export default function BookTravel() {
   }
 
   const toggleRowSelection = useCallback((index: number) => {
-    setSelectedDeparture((prev) =>
-      prev.includes(index) ? prev.filter((r) => r !== index) : [...prev, index],
-    );
+    setSelectedDeparture((prev) => (prev === index ? null : index));
   }, []);
 
   useEffect(() => {
@@ -135,6 +133,9 @@ export default function BookTravel() {
         )}
         {selectedDate && selectedStart && selectedEnd && (
           <DepartureTable departures={filteredDepartures} selectedDeparture={selectedDeparture} toggleRowSelection={toggleRowSelection} />
+        )}
+        {selectedDeparture && (
+          <p>{`You have selected ${filteredDepartures[selectedDeparture]}`}</p>
         )}
       </main>
     </div>

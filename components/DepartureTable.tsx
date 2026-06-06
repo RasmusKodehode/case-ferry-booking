@@ -2,7 +2,7 @@
 
 interface SelectableTableProps {
   departures: any[];
-  selectedDeparture: number[];
+  selectedDeparture: number | null;
   toggleRowSelection: (index: number) => void;
 }
 
@@ -35,8 +35,8 @@ export default function DepartureTable({
               }}
               role="button"
               tabIndex={0}
-              aria-pressed={selectedDeparture.includes(index)}
-              className={`${selectedDeparture.includes(index) ? "bg-amber-800" : "bg-white"} cursor-pointer border rounded-sm border-spacing-0.5 focus:outline-2 focus:-outline-offset-2`}
+              aria-pressed={selectedDeparture === index}
+              className={`${selectedDeparture === index ? "bg-amber-800" : "bg-white"} cursor-pointer border rounded-sm border-spacing-0.5 focus:outline-2 focus:-outline-offset-2`}
             >
               <td className="p-2 border">{row.ETD}</td>
               <td className="p-2 border">{row.ETA}</td>

@@ -18,7 +18,7 @@ interface dataProps {
 }
 
 export default function BookTravel() {
-  const [data, setData] = useState<dataProps[]>([])
+  const [data, setData] = useState<dataProps[]>([]);
   const [startLocations, setStartLocations] = useState<string[]>([]);
   const [endLocations, setEndLocations] = useState<string[]>([]);
   const [selectedStart, setSelectedStart] = useState<string | undefined>(
@@ -28,9 +28,14 @@ export default function BookTravel() {
   const [availableDates, setAvailableDates] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [filteredDepartures, setFilteredDepartures] = useState<any[]>([]);
-  const [selectedDeparture, setSelectedDeparture] = useState<number | null>(null);
+  const [selectedDeparture, setSelectedDeparture] = useState<number | null>(
+    null,
+  );
 
-  const filterListOfDates = data.filter((item: dataProps) => item.departure === selectedStart && item.arrival === selectedEnd);
+  const filterListOfDates = data.filter(
+    (item: dataProps) =>
+      item.departure === selectedStart && item.arrival === selectedEnd,
+  );
 
   const filterDepartures = () => {
     if (!selectedStart || !selectedEnd || !selectedDate || !data) {
@@ -58,7 +63,7 @@ export default function BookTravel() {
       );
     });
     setFilteredDepartures(filtered);
-  }
+  };
 
   const toggleRowSelection = useCallback((index: number) => {
     setSelectedDeparture((prev) => (prev === index ? null : index));
@@ -85,7 +90,7 @@ export default function BookTravel() {
 
   useEffect(() => {
     filterDepartures();
-  }, [selectedStart, selectedEnd, selectedDate])
+  }, [selectedStart, selectedEnd, selectedDate]);
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">
@@ -132,11 +137,15 @@ export default function BookTravel() {
           </div>
         )}
         {selectedDate && selectedStart && selectedEnd && (
-          <DepartureTable departures={filteredDepartures} selectedDeparture={selectedDeparture} toggleRowSelection={toggleRowSelection} />
+          <DepartureTable
+            departures={filteredDepartures}
+            selectedDeparture={selectedDeparture}
+            toggleRowSelection={toggleRowSelection}
+          />
         )}
-        {selectedDeparture && (
-          <p>{`You have selected ${filteredDepartures[selectedDeparture]}`}</p>
-        )}
+        {selectedDeparture && filteredDepartures.length !== 0 && (
+              <p>Your journey</p>
+            )}
       </main>
     </div>
   );

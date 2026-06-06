@@ -69,6 +69,18 @@ export default function BookTravel() {
     setSelectedDeparture((prev) => (prev === index ? null : index));
   }, []);
 
+  const getDate = (datestring: string) => {
+    const dateTimeArray = datestring.split(" ");
+    const date = dateTimeArray[0];
+    return date;
+  };
+
+  const getTime = (datestring: string) => {
+    const dateTimeArray = datestring.split(" ");
+    const time = dateTimeArray[1];
+    return time;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await getMockData();
@@ -143,9 +155,9 @@ export default function BookTravel() {
             toggleRowSelection={toggleRowSelection}
           />
         )}
-        {selectedDeparture && filteredDepartures.length !== 0 && (
-              <p>Your journey</p>
-            )}
+        {filteredDepartures.length !== 0 && selectedDeparture !== null && (
+          <p>{`You have selected ${getDate(filteredDepartures[selectedDeparture].ETD)} at ${getTime(filteredDepartures[selectedDeparture].ETD)} from ${filteredDepartures[selectedDeparture].departure} to ${filteredDepartures[selectedDeparture].arrival}`}</p>
+        )}
       </main>
     </div>
   );

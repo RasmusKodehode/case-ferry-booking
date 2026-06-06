@@ -152,7 +152,7 @@ export default function BookTravel() {
             )}
           </div>
         )}
-        {selectedDate && selectedStart && selectedEnd && (
+        {selectedDate && selectedStart && selectedEnd && filteredDepartures.length !== 0 && (
           <DepartureTable
             departures={filteredDepartures}
             selectedDeparture={selectedDeparture}

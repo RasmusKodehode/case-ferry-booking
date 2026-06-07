@@ -1,4 +1,6 @@
 "use client";
+
+import Link from "next/link";
 import { useBooking } from "@/context/BookingContext";
 
 export default function ConfirmationPage() {
@@ -24,9 +26,9 @@ export default function ConfirmationPage() {
         </p>
         <p className="mt-2">Price: {price} NOK</p>
       </div>
-      <button className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+      <Link href="/checkout" className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
         Confirm Booking
-      </button>
+      </Link>
     </div>
   );
 }

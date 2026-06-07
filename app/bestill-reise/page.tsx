@@ -88,12 +88,16 @@ export default function BookTravel() {
   };
 
   const handleConfirm = () => {
-    if (!selectedDeparture || !selectedDate) return;
+    if (selectedDeparture === null || selectedDate === null) {
+      console.log("no departure or no date");
+      return;
+    };
     setBookingData({
       date: selectedDate,
       departure: selectedDeparture,
     });
     router.push("/bekreft-reise");
+    console.log("confirm booking");
   };
 
   useEffect(() => {
@@ -181,6 +185,7 @@ export default function BookTravel() {
           <>
             <p>{`You have selected ${getDate(filteredDepartures[selectedDeparture].ETD)} at ${getTime(filteredDepartures[selectedDeparture].ETD)} from ${filteredDepartures[selectedDeparture].departure} to ${filteredDepartures[selectedDeparture].arrival}`}</p>
             <button
+              type="button"
               onClick={handleConfirm}
               className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >

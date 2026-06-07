@@ -1,7 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
+import { useBooking } from "@/context/BookingContext";
 import { getMockData } from "../actions";
 import DropDown from "@/components/DropDown";
 import DepartureCalendar from "@/components/Calendar";
@@ -31,6 +34,9 @@ export default function BookTravel() {
   const [selectedDeparture, setSelectedDeparture] = useState<number | null>(
     null,
   );
+
+  const { setBookingData } = useBooking();
+  const router = useRouter();
 
   const filterListOfDates = data.filter(
     (item: dataProps) =>
@@ -79,6 +85,15 @@ export default function BookTravel() {
     const dateTimeArray = datestring.split(" ");
     const time = dateTimeArray[1];
     return time;
+  };
+
+  const handleConfirm = () => {
+    if (!selectedDeparture || !selectedDate) return;
+    setBookingData({
+      date: selectedDate,
+      departure: selectedDeparture,
+    });
+    router.push("/bekreft-reise");
   };
 
   useEffect(() => {
@@ -152,15 +167,26 @@ export default function BookTravel() {
             )}
           </div>
         )}
-        {selectedDate && selectedStart && selectedEnd && filteredDepartures.length !== 0 && (
-          <DepartureTable
-            departures={filteredDepartures}
-            selectedDeparture={selectedDeparture}
-            toggleRowSelection={toggleRowSelection}
-          />
-        )}
+        {selectedDate &&
+          selectedStart &&
+          selectedEnd &&
+          filteredDepartures.length !== 0 && (
+            <DepartureTable
+              departures={filteredDepartures}
+              selectedDeparture={selectedDeparture}
+              toggleRowSelection={toggleRowSelection}
+            />
+          )}
         {filteredDepartures.length !== 0 && selectedDeparture !== null && (
-          <p>{`You have selected ${getDate(filteredDepartures[selectedDeparture].ETD)} at ${getTime(filteredDepartures[selectedDeparture].ETD)} from ${filteredDepartures[selectedDeparture].departure} to ${filteredDepartures[selectedDeparture].arrival}`}</p>
+          <>
+            <p>{`You have selected ${getDate(filteredDepartures[selectedDeparture].ETD)} at ${getTime(filteredDepartures[selectedDeparture].ETD)} from ${filteredDepartures[selectedDeparture].departure} to ${filteredDepartures[selectedDeparture].arrival}`}</p>
+            <button
+              onClick={handleConfirm}
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Continue to Confirmation
+            </button>
+          </>
         )}
       </main>
     </div>

@@ -1,10 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState, useEffect, useCallback } from "react";
+import { useBooking } from "@/context/BookingContext";
 import { getMockData } from "../actions";
 import DropDown from "@/components/DropDown";
 import DepartureCalendar from "@/components/Calendar";
+import DepartureTable from "@/components/DepartureTable";
 
 interface dataProps {
   id: number;
@@ -17,7 +21,7 @@ interface dataProps {
 }
 
 export default function BookTravel() {
-  const [data, setData] = useState<dataProps[]>([])
+  const [data, setData] = useState<dataProps[]>([]);
   const [startLocations, setStartLocations] = useState<string[]>([]);
   const [endLocations, setEndLocations] = useState<string[]>([]);
   const [selectedStart, setSelectedStart] = useState<string | undefined>(
@@ -26,15 +30,56 @@ export default function BookTravel() {
   const [selectedEnd, setSelectedEnd] = useState<string | undefined>(undefined);
   const [availableDates, setAvailableDates] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [departures, setDepartures] = useState<any[]>([]);
+  const [filteredDepartures, setFilteredDepartures] = useState<any[]>([]);
+  const [selectedDeparture, setSelectedDeparture] = useState<number | null>(
+    null,
+  );
 
-  const filterDepartures = data.filter((item: dataProps) => item.departure === selectedStart && item.arrival === selectedEnd);
+  const { setBookingData } = useBooking();
+  const router = useRouter();
+
+  const filterListOfDates = data.filter(
+    (item: dataProps) =>
+      item.departure === selectedStart && item.arrival === selectedEnd,
+  );
+
+  const filterDepartures = () => {
+    if (!selectedStart || !selectedEnd || !selectedDate || !data) {
+      setFilteredDepartures([]);
+      return;
+    }
+    const filtered = data.filter((departure) => {
+      // Parse ETD (DD.MM.YY HH.MM) into a Date object
+      const [day, month, year] = departure.ETD.split(" ")[0]
+        .split(".")
+        .map(Number);
+      const departureDate = new Date(2000 + year, month - 1, day);
+
+      // Normalize both dates to midnight for comparison
+      const normalizedDepartureDate = new Date(departureDate);
+      normalizedDepartureDate.setHours(0, 0, 0, 0);
+
+      const normalizedSelectedDate = new Date(selectedDate);
+      normalizedSelectedDate.setHours(0, 0, 0, 0);
+
+      return (
+        departure.departure === selectedStart &&
+        departure.arrival === selectedEnd &&
+        normalizedDepartureDate.getTime() === normalizedSelectedDate.getTime()
+      );
+    });
+    setFilteredDepartures(filtered);
+  };
+
+  const toggleRowSelection = useCallback((index: number) => {
+    setSelectedDeparture((prev) => (prev === index ? null : index));
+  }, []);
 
   const getDate = (datestring: string) => {
     const dateTimeArray = datestring.split(" ");
     const date = dateTimeArray[0];
     return date;
-  }
+  };
 
   const getTime = (datestring: string) => {
     const dateTimeArray = datestring.split(" ");
@@ -42,36 +87,24 @@ export default function BookTravel() {
     return time;
   };
 
-  const availableTimes = [
-    ...new Set(filterDepartures.map((item) => item.ETD.split(" ")[1])),
-  ];
-
-  const filteredDepartures = departures.filter((departure) => {
-    if (!selectedStart || !selectedEnd || !selectedDate) return false;
-
-    // Parse ETD (DD.MM.YY HH.MM) into a Date object
-    const [day, month, year] = departure.ETD.split(" ")[0]
-      .split(".")
-      .map(Number);
-    const departureDate = new Date(2000 + year, month - 1, day);
-
-    // Normalize both dates to midnight for comparison
-    const normalizedDepartureDate = new Date(departureDate);
-    normalizedDepartureDate.setHours(0, 0, 0, 0);
-
-    const normalizedSelectedDate = new Date(selectedDate);
-    normalizedSelectedDate.setHours(0, 0, 0, 0);
-
-    console.log(
-      `departureDate: ${departureDate}, selectedDate: ${selectedDate}`,
-    );
-
-    return (
-      departure.departure === selectedStart &&
-      departure.arrival === selectedEnd &&
-      normalizedDepartureDate.getTime() === normalizedSelectedDate.getTime()
-    );
-  });
+  const handleConfirm = () => {
+    if (selectedDeparture === null || selectedDate === null) {
+      console.log("no departure or no date");
+      return;
+    };
+    setBookingData({
+      date: getDate(filteredDepartures[selectedDeparture].ETD),
+      departure: getTime(filteredDepartures[selectedDeparture].ETD),
+      //departureDate: getDate(filteredDepartures[selectedDeparture].ETD),
+      start: filteredDepartures[selectedDeparture].departure,
+      end: filteredDepartures[selectedDeparture].arrival,
+      arrivalDate: getDate(filteredDepartures[selectedDeparture].ETA),
+      arrivalTime: getTime(filteredDepartures[selectedDeparture].ETA),
+      price: filteredDepartures[selectedDeparture].price,
+    });
+    router.push("/bekreft-reise");
+    console.log("confirm booking");
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,10 +120,18 @@ export default function BookTravel() {
   }, [data]);
 
   useEffect(() => {
+    setFilteredDepartures([]);
+    setSelectedDate(null);
+    setSelectedDeparture(null);
     setAvailableDates([
-      ...new Set(filterDepartures.map((item) => item.ETD.split(" ")[0])),
+      ...new Set(filterListOfDates.map((item) => item.ETD.split(" ")[0])),
     ]);
   }, [selectedStart, selectedEnd]);
+
+  useEffect(() => {
+    setSelectedDeparture(null);
+    filterDepartures();
+  }, [selectedDate]);
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">
@@ -135,6 +176,28 @@ export default function BookTravel() {
               <p>No departures available for the selected route and date.</p>
             )}
           </div>
+        )}
+        {selectedDate &&
+          selectedStart &&
+          selectedEnd &&
+          filteredDepartures.length !== 0 && (
+            <DepartureTable
+              departures={filteredDepartures}
+              selectedDeparture={selectedDeparture}
+              toggleRowSelection={toggleRowSelection}
+            />
+          )}
+        {filteredDepartures.length !== 0 && selectedDeparture !== null && (
+          <>
+            <p>{`You have selected ${getDate(filteredDepartures[selectedDeparture].ETD)} at ${getTime(filteredDepartures[selectedDeparture].ETD)} from ${filteredDepartures[selectedDeparture].departure} to ${filteredDepartures[selectedDeparture].arrival}`}</p>
+            <button
+              type="button"
+              onClick={handleConfirm}
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Continue to Confirmation
+            </button>
+          </>
         )}
       </main>
     </div>

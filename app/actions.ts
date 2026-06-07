@@ -56,5 +56,14 @@ export async function getMockData() {
       duration: 19,
       price: 1900,
     },
+    {
+      id: 7,
+      departure: "Bergen",
+      arrival: "Stavanger",
+      ETD: "01.07.26 15.30",
+      ETA: "01.07.26 20.00",
+      duration: 4.5,
+      price: 800,
+    },
   ];
 }

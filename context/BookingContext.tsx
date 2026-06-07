@@ -4,8 +4,13 @@ import { createContext, useState, useContext, ReactNode } from "react";
 
 // Define the shape of your booking data
 interface BookingData {
-  date: Date | null;
-  departure: any; // Replace with your departure type
+  date: string | null;
+  departure: string; // Replace with your departure type
+  start: string;
+  end: string;
+  arrivalDate: string;
+  arrivalTime: string;
+  price: number;
 }
 
 // Define the context type

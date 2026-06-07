@@ -93,8 +93,14 @@ export default function BookTravel() {
       return;
     };
     setBookingData({
-      date: selectedDate,
-      departure: selectedDeparture,
+      date: getDate(filteredDepartures[selectedDeparture].ETD),
+      departure: getTime(filteredDepartures[selectedDeparture].ETD),
+      //departureDate: getDate(filteredDepartures[selectedDeparture].ETD),
+      start: filteredDepartures[selectedDeparture].departure,
+      end: filteredDepartures[selectedDeparture].arrival,
+      arrivalDate: getDate(filteredDepartures[selectedDeparture].ETD),
+      arrivalTime: getTime(filteredDepartures[selectedDeparture].ETD),
+      price: filteredDepartures[selectedDeparture].price,
     });
     router.push("/bekreft-reise");
     console.log("confirm booking");

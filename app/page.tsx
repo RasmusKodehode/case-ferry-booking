@@ -6,25 +6,24 @@ import { FaArrowRight } from "react-icons/fa6";
 
 export default function Home() {
   return (
-    <main className="flex flex-1 w-full flex-col gap-4 bg-white">
-      <div className="flex w-full m-0 p-0">
-        <Image
-          src={Banner}
-          width={1000}
-          height={1000}
-          alt="Bilde af fjordline båt"
-        />
-      </div>
-      <div className="flex flex-col justify-baseline gap-1.5 px-6">
-        <p className="text-lg">
+    <main className="flex flex-1 w-full flex-col m-0 p-0 gap-4 bg-white md:flex-row-reverse md:px-8 md:gap-12">
+      <Image
+        src={Banner}
+        width={1000}
+        height={1000}
+        alt="Bilde af fjordline båt"
+        className="flex w-full m-0 p-0 md:w-1/2 md:h-auto"
+      />
+      <div className="flex flex-col justify-baseline items-baseline text-left gap-1.5 px-6 md:justify-center md:items-center md:gap-4">
+        <p className="text-lg md:text-4xl md:ml-0 md:mr-auto">
           Reis i sommer med <span className="text-red-500">komfort</span>
         </p>
-        <p className="text-sm">
+        <p className="text-sm md:text-3xl">
           Hvor i <span className="text-red-500">Danmark</span> skal du i sommer?
         </p>
         <Link
           href="/bestill-reise"
-          className="flex flex-row justify-between w-full mt-4 px-3 py-2 bg-red-600 text-white items-center rounded-lg"
+          className="flex flex-row justify-between w-full mt-4 px-3 py-2 bg-red-600 text-white items-center rounded-lg md:py-6 md:px-5 md:rounded-2xl"
         >
           <div className="flex flex-row items-center gap-2">
             <FaSearch />

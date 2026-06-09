@@ -40,9 +40,9 @@ export default function DepartureTable({
             >
               <td className="flex flex-row items-center justify-between p-2">
                 <div className="flex flex-col">
-                  <div>{row.ETD} fra {row.departure} -</div>
-                  <div>{row.ETA} i {row.arrival}</div>
-                  <div>Reisen tar {row.duration} timer</div>
+                  <div className="text-xs md:text-base">{row.ETD} fra {row.departure} -</div>
+                  <div className="text-xs md:text-base">{row.ETA} i {row.arrival}</div>
+                  <div className="text-xs">Reisen tar {row.duration} timer</div>
                 </div>
                 <div>
                   {row.price} kr

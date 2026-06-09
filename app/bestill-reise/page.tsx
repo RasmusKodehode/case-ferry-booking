@@ -137,45 +137,51 @@ export default function BookTravel() {
   }, [selectedDate]);
 
   return (
-    <main className="flex flex-col items-baseline flex-1 w-full gap-4 px-2 bg-amber-50">
-      <h2 className="pt-3 font-bold">Finn din reise</h2>
-      <div className="flex flex-col p-1.5 shadow-2xl w-full bg-white gap-2">
-        <div className="flex flex-row items-center gap-1">
-          <MdOutlineDirectionsBoat />
-          <h3 className="text-lg font-semibold">Hvor skal du reise?</h3>
+    <main className="flex flex-col items-baseline flex-1 w-full gap-4 px-2 bg-amber-50 md:px-20">
+      <h2 className="pt-3 text-2xl font-bold">Finn din reise</h2>
+      <div className="flex flex-col w-full gap-4 justify-baseline md:flex-row md:justify-between">
+        <div className="flex flex-col p-1.5 shadow-lg w-full h-fit bg-white gap-2 md:w-fit md:px-8 md:py-4">
+          <div className="flex flex-row items-center gap-1">
+            <MdOutlineDirectionsBoat />
+            <h3 className="text-lg font-semibold">Hvor skal du reise?</h3>
+          </div>
+          <div className="flex flex-col w-full gap-2 md:flex-row md:gap-8">
+            <div className="flex flex-col w-full gap-1">
+              <label>Fra</label>
+              <DropDown
+                locations={startLocations}
+                selectedLocation={selectedStart}
+                setSelectedLocation={setSelectedStart}
+              />
+            </div>
+            <div className="flex flex-col w-full gap-1">
+              <label>Til</label>
+              <DropDown
+                locations={endLocations}
+                selectedLocation={selectedEnd}
+                setSelectedLocation={setSelectedEnd}
+              />
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col w-full gap-1">
-          <label>Fra</label>
-          <DropDown
-            locations={startLocations}
-            selectedLocation={selectedStart}
-            setSelectedLocation={setSelectedStart}
-          />
-        </div>
-        <div className="flex flex-col w-full gap-1">
-          <label>Til</label>
-          <DropDown
-            locations={endLocations}
-            selectedLocation={selectedEnd}
-            setSelectedLocation={setSelectedEnd}
-          />
-        </div>
+        {availableDates.length !== 0 && (
+          <div className="flex flex-col p-1.5 shadow-lg bg-white w-full md:w-fit md:px-8 md:py-4">
+            <DepartureCalendar
+              availableDates={availableDates}
+              selectedDate={selectedDate}
+              onDateSelect={setSelectedDate}
+            />
+          </div>
+        )}
       </div>
-      {availableDates.length !== 0 && (
-        <div className="flex flex-col p-1.5 shadow-2xl bg-white w-full">
-          <DepartureCalendar
-            availableDates={availableDates}
-            selectedDate={selectedDate}
-            onDateSelect={setSelectedDate}
-          />
-        </div>
-      )}
       {selectedDate &&
         selectedStart &&
         selectedEnd &&
         filteredDepartures.length !== 0 && (
-          <div className="flex flex-col w-full gap-2 py-1.5">
-            <h2>Utreise fra {selectedStart}</h2>
+          <div className="flex flex-col w-full gap-2 py-1.5 md:w-1/2">
+            <h3 className="text-lg font-semibold">
+              Utreise fra {selectedStart}
+            </h3>
             <DepartureTable
               departures={filteredDepartures}
               selectedDeparture={selectedDeparture}
@@ -193,7 +199,7 @@ export default function BookTravel() {
         <button
           type="button"
           onClick={handleConfirm}
-          className="flex flex-row items-center justify-between w-full px-3 py-2 mt-4 text-white bg-red-600 rounded-lg md:py-6 md:px-5 md:rounded-2xl"
+          className="flex flex-row items-center justify-between w-full px-3 py-2 mt-4 text-white bg-red-600 rounded-lg md:py-6 md:px-5 md:rounded-2xl md:w-1/3"
         >
           Bekreft
           <FaArrowRight />

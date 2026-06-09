@@ -6,13 +6,13 @@ import { FaArrowRight } from "react-icons/fa6";
 
 export default function Home() {
   return (
-    <main className="flex flex-1 w-full flex-col m-0 p-0 gap-4 bg-white md:flex-row-reverse md:px-8 md:gap-12">
+    <main className="flex flex-col flex-1 w-full gap-4 p-0 m-0 bg-amber-50 md:flex-row-reverse md:px-20 md:gap-12">
       <Image
         src={Banner}
         width={1000}
         height={1000}
         alt="Bilde af fjordline båt"
-        className="flex w-full m-0 p-0 md:w-1/2 md:h-auto"
+        className="flex w-full p-0 m-0 md:w-1/2 md:h-auto"
       />
       <div className="flex flex-col justify-baseline items-baseline text-left gap-1.5 px-6 md:justify-center md:items-center md:gap-4">
         <p className="text-lg md:text-4xl md:ml-0 md:mr-auto">
@@ -23,7 +23,7 @@ export default function Home() {
         </p>
         <Link
           href="/bestill-reise"
-          className="flex flex-row justify-between w-full mt-4 px-3 py-2 bg-red-600 text-white items-center rounded-lg md:py-6 md:px-5 md:rounded-2xl"
+          className="flex flex-row items-center justify-between w-full px-3 py-2 mt-4 text-white bg-red-600 rounded-lg md:py-6 md:px-5 md:rounded-2xl"
         >
           <div className="flex flex-row items-center gap-2">
             <FaSearch />

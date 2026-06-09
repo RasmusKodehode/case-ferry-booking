@@ -103,6 +103,7 @@ export default function BookTravel() {
       end: filteredDepartures[selectedDeparture].arrival,
       arrivalDate: getDate(filteredDepartures[selectedDeparture].ETA),
       arrivalTime: getTime(filteredDepartures[selectedDeparture].ETA),
+      duration: filteredDepartures[selectedDeparture].duration,
       price: filteredDepartures[selectedDeparture].price,
     });
     router.push("/bekreft-reise");

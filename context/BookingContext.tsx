@@ -10,6 +10,7 @@ interface BookingData {
   end: string;
   arrivalDate: string;
   arrivalTime: string;
+  duration: number;
   price: number;
 }
 

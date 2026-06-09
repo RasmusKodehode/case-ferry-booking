@@ -17,7 +17,7 @@ export default function DropDown({ locations, selectedLocation, setSelectedLocat
         onChange={(e) => setSelectedLocation(e.target.value)}
         className="p-2 border rounded"
       >
-        <option value="">Select a location</option>
+        <option value="">Velg sted</option>
         {locations.map((location) => (
           <option key={location} value={location}>
             {location}

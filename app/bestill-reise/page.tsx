@@ -4,6 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
+import { MdOutlineDirectionsBoat } from "react-icons/md";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa6";
 import { useBooking } from "@/context/BookingContext";
 import { getMockData } from "../actions";
 import DropDown from "@/components/DropDown";
@@ -91,7 +94,7 @@ export default function BookTravel() {
     if (selectedDeparture === null || selectedDate === null) {
       console.log("no departure or no date");
       return;
-    };
+    }
     setBookingData({
       date: getDate(filteredDepartures[selectedDeparture].ETD),
       departure: getTime(filteredDepartures[selectedDeparture].ETD),
@@ -134,72 +137,68 @@ export default function BookTravel() {
   }, [selectedDate]);
 
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans">
-      <main className="flex flex-1 w-full flex-col items-center justify-between px-18 py-32 bg-white sm:items-start">
-        Bestill reise her!
-        <DropDown
-          locations={startLocations}
-          selectedLocation={selectedStart}
-          setSelectedLocation={setSelectedStart}
-        />
-        {selectedStart && <p>You selected: {selectedStart}</p>}
-        <DropDown
-          locations={endLocations}
-          selectedLocation={selectedEnd}
-          setSelectedLocation={setSelectedEnd}
-        />
-        {selectedEnd && <p>You selected: {selectedEnd}</p>}
-        {availableDates.length !== 0 && (
+    <main className="flex flex-col items-baseline flex-1 w-full gap-4 px-2 bg-amber-50">
+      <h2 className="pt-3 font-bold">Finn din reise</h2>
+      <div className="flex flex-col p-1.5 shadow-2xl w-full bg-white gap-2">
+        <div className="flex flex-row items-center gap-1">
+          <MdOutlineDirectionsBoat />
+          <h3 className="text-lg font-semibold">Hvor skal du reise?</h3>
+        </div>
+        <div className="flex flex-col w-full gap-1">
+          <label>Fra</label>
+          <DropDown
+            locations={startLocations}
+            selectedLocation={selectedStart}
+            setSelectedLocation={setSelectedStart}
+          />
+        </div>
+        <div className="flex flex-col w-full gap-1">
+          <label>Til</label>
+          <DropDown
+            locations={endLocations}
+            selectedLocation={selectedEnd}
+            setSelectedLocation={setSelectedEnd}
+          />
+        </div>
+      </div>
+      {availableDates.length !== 0 && (
+        <div className="flex flex-col p-1.5 shadow-2xl bg-white w-full">
           <DepartureCalendar
             availableDates={availableDates}
             selectedDate={selectedDate}
             onDateSelect={setSelectedDate}
           />
-        )}
-        {/*`Available dates are ${availableDates} and available times are ${availableTimes}`*/}
-        {`selected date is ${selectedDate}`}
-        {selectedDate && selectedStart && selectedEnd && (
-          <div className="mt-4">
-            <h2 className="text-lg font-semibold mb-2">
-              Available Departures:
-            </h2>
-            {filteredDepartures.length > 0 ? (
-              <ul className="list-disc pl-5">
-                {filteredDepartures.map((departure) => (
-                  <li key={departure.id}>
-                    {departure.ETD} - {departure.ETA} (Duration:{" "}
-                    {departure.duration} hours)
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No departures available for the selected route and date.</p>
-            )}
-          </div>
-        )}
-        {selectedDate &&
-          selectedStart &&
-          selectedEnd &&
-          filteredDepartures.length !== 0 && (
+        </div>
+      )}
+      {selectedDate &&
+        selectedStart &&
+        selectedEnd &&
+        filteredDepartures.length !== 0 && (
+          <div className="flex flex-col w-full gap-2 py-1.5">
+            <h2>Utreise fra {selectedStart}</h2>
             <DepartureTable
               departures={filteredDepartures}
               selectedDeparture={selectedDeparture}
               toggleRowSelection={toggleRowSelection}
             />
-          )}
-        {filteredDepartures.length !== 0 && selectedDeparture !== null && (
-          <>
-            <p>{`You have selected ${getDate(filteredDepartures[selectedDeparture].ETD)} at ${getTime(filteredDepartures[selectedDeparture].ETD)} from ${filteredDepartures[selectedDeparture].departure} to ${filteredDepartures[selectedDeparture].arrival}`}</p>
-            <button
-              type="button"
-              onClick={handleConfirm}
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              Continue to Confirmation
-            </button>
-          </>
+          </div>
         )}
-      </main>
-    </div>
+      {selectedDate &&
+        selectedStart &&
+        selectedEnd &&
+        filteredDepartures.length === 0 && (
+          <p>Fant ingen tilgjengelige reiser denne dagen.</p>
+        )}
+      {filteredDepartures.length !== 0 && selectedDeparture !== null && (
+        <button
+          type="button"
+          onClick={handleConfirm}
+          className="flex flex-row items-center justify-between w-full px-3 py-2 mt-4 text-white bg-red-600 rounded-lg md:py-6 md:px-5 md:rounded-2xl"
+        >
+          Bekreft
+          <FaArrowRight />
+        </button>
+      )}
+    </main>
   );
 }

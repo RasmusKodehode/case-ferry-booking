@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { FaRegCalendarAlt } from "react-icons/fa";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -68,18 +69,23 @@ export default function DepartureCalendar({
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-lg font-semibold mb-2">Select Departure Date</h2>
-      <Calendar
-        onChange={handleDateChange}
-        value={selectedDate}
-        tileClassName={({ date, view }) => {
-          if (view === "month" && isDateAvailable(date)) {
-            return "bg-blue-200 hover:bg-blue-300";
-          }
-        }}
-      />
-      {selectedDate && <p className="mt-2">Selected: {selectedDate.toLocaleDateString()}</p>}
+    <div className="p-0">
+      <div className="flex flex-row items-center gap-1 mb-2">
+        <FaRegCalendarAlt />
+        <h3 className="text-lg font-semibold">Når skal du reise?</h3>
+      </div>
+      <div className="overflow-hidden">
+        <Calendar
+          onChange={handleDateChange}
+          value={selectedDate}
+          tileClassName={({ date, view }) => {
+            if (view === "month" && isDateAvailable(date)) {
+              return "bg-blue-200 hover:bg-blue-300";
+            }
+          }}
+          className="w-full"
+        />
+      </div>
     </div>
   );
 }

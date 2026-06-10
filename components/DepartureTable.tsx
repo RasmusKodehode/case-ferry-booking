@@ -13,14 +13,14 @@ export default function DepartureTable({
 }: SelectableTableProps) {
   return (
     <>
-      <table className="bg-amber-400 w-full margin-sm">
+      <table className="w-full bg-white margin-sm">
         <thead>
-          <tr>
+          {/*<tr>
             <th className="p-2 text-left">Departure Time</th>
             <th className="p-2 text-left">Arrival Time</th>
             <th className="p-2 text-left">Duration</th>
             <th className="p-2 text-left">Price (NOK)</th>
-          </tr>
+          </tr>*/}
         </thead>
         <tbody>
           {departures.map((row, index) => (
@@ -36,12 +36,22 @@ export default function DepartureTable({
               role="button"
               tabIndex={0}
               aria-pressed={selectedDeparture === index}
-              className={`${selectedDeparture === index ? "bg-amber-800" : "bg-white"} cursor-pointer border rounded-sm border-spacing-0.5 focus:outline-2 focus:-outline-offset-2`}
+              className={`${selectedDeparture === index ? "border-3 border-green-900" : "border-none"} cursor-pointer rounded-sm focus:outline-2 focus:-outline-offset-2 shadow`}
             >
-              <td className="p-2 border">{row.ETD}</td>
+              <td className="flex flex-row items-center justify-between p-2">
+                <div className="flex flex-col">
+                  <div className="text-xs md:text-base">{row.ETD} fra {row.departure} -</div>
+                  <div className="text-xs md:text-base">{row.ETA} i {row.arrival}</div>
+                  <div className="text-xs">Reisen tar {row.duration} timer</div>
+                </div>
+                <div>
+                  {row.price} kr
+                </div>
+              </td>
+              {/*<td className="p-2">{row.ETD}</td>
               <td className="p-2 border">{row.ETA}</td>
               <td className="p-2 border">{row.duration} hours</td>
-              <td className="p-2 border">{row.price}</td>
+              <td className="p-2 border">{row.price}</td>*/}
             </tr>
           ))}
         </tbody>

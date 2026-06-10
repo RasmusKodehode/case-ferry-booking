@@ -1,33 +1,57 @@
 "use client";
 
 import Link from "next/link";
+import { FaArrowRight } from "react-icons/fa6";
 import { useBooking } from "@/context/BookingContext";
 
 export default function ConfirmationPage() {
   const { bookingData } = useBooking();
 
   if (!bookingData) {
-    return <div>No booking data found.</div>;
+    return (
+      <div className="flex flex-col items-baseline flex-1 w-full gap-2 p-2 bg-amber-50 md:px-20 md:justify-center">
+        Beklager, fant ingen booking. Gå tilbake til forrige side og velg
+        avgang.
+      </div>
+    );
   }
 
-  const { date, departure, start, end, arrivalDate, arrivalTime, price } = bookingData;
+  const { date, departure, start, end, arrivalDate, arrivalTime, duration, price } = bookingData;
 
   return (
-    <div className="p-8 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Confirm Your Booking</h1>
-      <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-        <p>
-          You have selected <span className="font-medium">{date}</span> at{" "}
-          <span className="font-medium">{departure}</span> from{" "}
-          <span className="font-medium">{start}</span> to{" "}
-          <span className="font-medium">{end}</span>{" "}
-          <span className="font-medium">{arrivalDate}</span>
-          <span className="font-medium">{arrivalTime}</span> .
-        </p>
-        <p className="mt-2">Price: {price} NOK</p>
+    <div className="flex flex-col items-baseline flex-1 w-full gap-2 p-2 bg-amber-50 md:px-20 md:justify-center">
+      <h2 className="mb-4 ml-0 mr-auto text-2xl font-bold">
+        Dine reisedetaljer
+      </h2>
+      <div className="flex flex-col w-full gap-2 p-4 bg-white rounded-lg shadow-lg md:w-1/2">
+        <div className="flex flex-col gap-2">
+          Utreise:
+          <div className="flex flex-row items-center justify-between w-full p-2 border rounded">
+            <div className="flex flex-col w-2/3">
+              <p className="text-xs md:text-base">
+                {date} kl {departure} fra {start} -
+              </p>
+              <p className="text-xs md:text-base">
+                {arrivalDate} kl {arrivalTime} i {end}
+              </p>
+              <p className="text-xs md:text-sm">Reisen tar {duration} timer</p>
+            </div>
+            <div className="w-1/3 text-right">
+              <p>{price} kr</p>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-row items-center justify-between w-full border-t">
+          <p className="text-lg font-semibold">Totalpris:</p>
+          <p className="text-lg">{price} kr</p>
+        </div>
       </div>
-      <Link href="/checkout" className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-        Confirm Booking
+      <Link
+        href="/checkout"
+        className="flex flex-row items-center justify-between w-full px-3 py-2 mt-4 text-white bg-red-600 rounded-lg md:py-6 md:px-5 md:rounded-2xl md:w-fit md:gap-5"
+      >
+        Bekreft bestilling
+        <FaArrowRight />
       </Link>
     </div>
   );

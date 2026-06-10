@@ -14,7 +14,8 @@ Du skal bygge en enkel webapplikasjon der en bruker kan søke etter og velge en 
         Ingen database nødvendig — mock-data i kode eller JSON-fil er helt greit
         Koden skal ligge i et offentlig GitHub-repo med en kort README
 
-Backend solved with NextJS Server Actions, mock data created. Empty booking page created and linked from main page. Mock data fetched to frontend.
+Backend: Brukt NextJS Server Actions. Ruter mellom Bergen, Stavanger og Hirtshals, Datoer 01-03.07.26.
+Frontend: Starter på landingsside. Navigerer til side for bestilling, velg startlokasjon og destinasjon, velg dato. En liste med tilgjengelige avganger kommer opp, du kan velge din avgang. Deretter blir du tatt videre til side for bekreftelse, og får en oppsummering av den valgte reisen. Der kan du bekrefte bestillingen, og du vil bli tatt videre til en siste side som bekrefter bestillingen. Der kan du velge å gå tilbake til hjemmesiden. Alle sidene har fått en enkel styling med en mobilversjon og en desktop versjon.
 
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).

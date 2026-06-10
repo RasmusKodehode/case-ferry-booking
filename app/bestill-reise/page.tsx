@@ -141,12 +141,12 @@ export default function BookTravel() {
     <main className="flex flex-col items-start flex-1 w-full gap-4 px-2 py-3 bg-amber-50 md:px-20">
       <div className="flex flex-col items-start w-full gap-4">
         <h2 className="pt-3 text-2xl font-bold">Finn din reise</h2>
-        <div className="flex flex-col p-1.5 shadow-lg w-full h-fit bg-white gap-2 md:px-8 md:py-4 md:w-1/2">
+        <div className="flex flex-col p-1.5 shadow-lg w-full h-fit bg-white gap-2 md:px-8 md:py-4 md:w-1/2 rounded">
           <div className="flex flex-row items-center gap-1">
             <MdOutlineDirectionsBoat />
             <h3 className="text-lg font-semibold">Hvor skal du reise?</h3>
           </div>
-          <div className="flex flex-col w-full gap-2 md:flex-row md:gap-8">
+          <div className="flex flex-col w-full gap-2 md:flex-row md:gap-8 md:w-fit">
             <div className="flex flex-col w-full gap-1">
               <label>Fra</label>
               <DropDown
@@ -166,7 +166,7 @@ export default function BookTravel() {
           </div>
         </div>
         {availableDates.length !== 0 && (
-          <div className="flex flex-col p-1.5 shadow-lg bg-white w-full md:w-1/2 md:px-8 md:py-4">
+          <div className="flex flex-col p-1.5 shadow-lg bg-white w-full md:w-1/2 md:px-8 md:py-4 rounded">
             <DepartureCalendar
               availableDates={availableDates}
               selectedDate={selectedDate}

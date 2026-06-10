@@ -138,10 +138,10 @@ export default function BookTravel() {
   }, [selectedDate]);
 
   return (
-    <main className="flex flex-col items-baseline flex-1 w-full gap-4 px-2 bg-amber-50 md:px-20">
-      <h2 className="pt-3 text-2xl font-bold">Finn din reise</h2>
-      <div className="flex flex-col w-full gap-4 justify-baseline md:flex-row md:justify-between">
-        <div className="flex flex-col p-1.5 shadow-lg w-full h-fit bg-white gap-2 md:w-fit md:px-8 md:py-4">
+    <main className="flex flex-col items-start flex-1 w-full gap-4 px-2 py-3 bg-amber-50 md:px-20">
+      <div className="flex flex-col items-start w-full gap-4">
+        <h2 className="pt-3 text-2xl font-bold">Finn din reise</h2>
+        <div className="flex flex-col p-1.5 shadow-lg w-full h-fit bg-white gap-2 md:px-8 md:py-4 md:w-1/2">
           <div className="flex flex-row items-center gap-1">
             <MdOutlineDirectionsBoat />
             <h3 className="text-lg font-semibold">Hvor skal du reise?</h3>
@@ -166,7 +166,7 @@ export default function BookTravel() {
           </div>
         </div>
         {availableDates.length !== 0 && (
-          <div className="flex flex-col p-1.5 shadow-lg bg-white w-full md:w-fit md:px-8 md:py-4">
+          <div className="flex flex-col p-1.5 shadow-lg bg-white w-full md:w-1/2 md:px-8 md:py-4">
             <DepartureCalendar
               availableDates={availableDates}
               selectedDate={selectedDate}
@@ -202,7 +202,7 @@ export default function BookTravel() {
           onClick={handleConfirm}
           className="flex flex-row items-center justify-between w-full px-3 py-2 mt-4 text-white bg-red-600 rounded-lg md:py-6 md:px-5 md:rounded-2xl md:w-1/3"
         >
-          Bekreft
+          Gå videre
           <FaArrowRight />
         </button>
       )}

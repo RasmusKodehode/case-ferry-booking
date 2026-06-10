@@ -12,13 +12,13 @@ export default function Home() {
         width={1000}
         height={1000}
         alt="Bilde af fjordline båt"
-        className="flex w-full p-0 m-0 md:w-1/2 md:h-auto"
+        className="flex w-full p-0 m-0 my-auto md:w-1/2 md:h-auto md:self-start"
       />
       <div className="flex flex-col justify-baseline items-baseline text-left gap-1.5 px-6 md:justify-center md:items-center md:gap-4">
         <p className="text-lg md:text-4xl md:ml-0 md:mr-auto">
           Reis i sommer med <span className="text-red-500">komfort</span>
         </p>
-        <p className="text-sm md:text-3xl">
+        <p className="text-sm md:text-2xl md:ml-0 md:mr-auto">
           Hvor i <span className="text-red-500">Danmark</span> skal du i sommer?
         </p>
         <Link

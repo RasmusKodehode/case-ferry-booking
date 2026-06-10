@@ -8,7 +8,12 @@ export default function ConfirmationPage() {
   const { bookingData } = useBooking();
 
   if (!bookingData) {
-    return <div className="p-6 mx-auto bg-amber-50">Beklager, fant ingen booking. Gå tilbake til forrige side og velg avgang.</div>;
+    return (
+      <div className="flex flex-col items-baseline flex-1 w-full gap-2 p-2 bg-amber-50 md:px-20 md:justify-center">
+        Beklager, fant ingen booking. Gå tilbake til forrige side og velg
+        avgang.
+      </div>
+    );
   }
 
   const { date, departure, start, end, arrivalDate, arrivalTime, duration, price } = bookingData;

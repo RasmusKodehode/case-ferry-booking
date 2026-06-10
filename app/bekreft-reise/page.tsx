@@ -18,7 +18,7 @@ export default function ConfirmationPage() {
       <h2 className="mb-4 ml-0 mr-auto text-2xl font-bold">
         Dine reisedetaljer
       </h2>
-      <div className="flex flex-col w-full gap-2 p-4 bg-white border rounded-lg shadow-lg md:w-1/2">
+      <div className="flex flex-col w-full gap-2 p-4 bg-white rounded-lg shadow-lg md:w-1/2">
         <div className="flex flex-col gap-2">
           Utreise:
           <div className="flex flex-row items-center justify-between w-full p-2 border rounded">
@@ -36,8 +36,8 @@ export default function ConfirmationPage() {
             </div>
           </div>
         </div>
-        <div className="flex flex-row items-center justify-between w-full border-t-2">
-          <p className="text-lg font-semibold">Pris:</p>
+        <div className="flex flex-row items-center justify-between w-full border-t">
+          <p className="text-lg font-semibold">Totalpris:</p>
           <p className="text-lg">{price} kr</p>
         </div>
       </div>
